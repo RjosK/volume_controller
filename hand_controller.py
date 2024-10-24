@@ -19,9 +19,10 @@ cambiar = 0
 #----------------------------------------------------------------- 
 while True:
     success,img = cap.read()
-
+    if not success:
+        break  # Sale si no hay éxito en la captura de la cámara
+      
     imgRGB = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-
     resultado = manos.process(imgRGB)
 #--------------------------------------------------------------------------               
         #Marcar los dedos a usar
@@ -48,14 +49,12 @@ while True:
         distanciaEntreDedos_Anular = math.hypot(x12 - x4, y12 - y4)
         cv2.line(img, (x4, y4), (x12, y12), (255, 0, 255), 3)
 #--------------------------------------------------------------------------
-        while distanciaEntreDedos_indice < 35 and cambiar == 0:
+        if distanciaEntreDedos_indice < 35 and cambiar == 0:
             pyautogui.keyDown('volumeup')
-            break
 #--------------------------------------------------------------------------
         # Disminuir volumen con el anular
-        while distanciaEntreDedos_Anular < 35 and cambiar == 0:
+        if distanciaEntreDedos_Anular < 35 and cambiar == 0:
             pyautogui.keyDown('volumedown')
-            break
 #--------------------------------------------------------------------------
     cv2.imshow("Image",img)
     cv2.waitKey(1)
